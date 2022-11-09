@@ -1,0 +1,26 @@
+input {
+    background: #00000000;
+    padding: 20px;
+    border: none;
+    color: white;
+    border-radius: 20px;
+    outline: none;
+}
+
+#searchbar{
+    border-radius: 20px;
+    background-color: #00000040;
+    margin-bottom:20px;
+    padding: 10px;
+}
+
+input:last-child{
+    background-color: #398ffc;
+    box-shadow: 3px 5px 40px 0px #398ffc90;
+    transition: 0.4s;
+}
+
+input:last-child:hover{
+    background-color: #398ffc;
+    box-shadow: 3px 5px 60px 0px #398ffc;
+}
