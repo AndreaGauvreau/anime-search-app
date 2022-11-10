@@ -1,6 +1,7 @@
-import React, {useState, useEffect, useReducer} from 'react'
+import React, {useState, useEffect, useReducer, useRef} from 'react'
 import './animeviewcard.css'
 import { AnimeView, useAnimeInfos, useFindAnimeList, useFindAnimeName } from './fetchAnime'
+import { motion } from "framer-motion"
 
 
 export default function Anime({animeName}){
@@ -24,6 +25,13 @@ export default function Anime({animeName}){
 }
 
 export function AnimeList({animeName}){
+  const [width, setWidth]=useState(0)
+  const carousel=useRef()
+  useEffect(()=>{
+    setWidth()
+  },[])
+
+
   const state=useFindAnimeList(animeName)
   const {data:animes, error, status}=state
   if(error){
@@ -33,11 +41,14 @@ export function AnimeList({animeName}){
   }else if(status==='fetching'){
     return 'Chargement...'
   }else if(status==='done'){
-    return(<div>
-      {animes.map( animes =>(
-      <div key={animes.id}><AnimeView name={animes} animeName={animeName} /></div> )
+    return(
+    <motion.div ref={carousel} className='carousel' whileTap={{cursor:"grabbing"}}>
+    <motion.div drag="x" dragConstraints={{right:0, left: -width}} className='inner-carousel' >
+      {animes.map( (animes, index) =>(
+      <motion.div className='item' key={index}><AnimeView name={animes} animeName={animeName} /></motion.div> )
       )}
-   </div>)
+   </motion.div>
+   </motion.div>)
   }
 
 

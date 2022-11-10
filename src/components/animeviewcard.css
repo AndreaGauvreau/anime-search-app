@@ -7,11 +7,13 @@
     padding: 10px;
     border-radius: 20px;
     position: relative;
+    font-size: 15px;
+    
 }
 
 #animeviewcard img{
 border-radius: 20px;
-width: 300px
+width: 200px
 }
 
 #firstimage{
@@ -34,4 +36,15 @@ width: 300px
     z-index: 1; 
     mix-blend-mode:color-dodge;
 
+    }
+
+    .carousel{
+        cursor: grab;
+        overflow: hidden;
+        width: 100vw
+    }
+
+    .inner-carousel{
+        display: flex;
+        gap: 100px
     }

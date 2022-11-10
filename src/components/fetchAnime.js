@@ -18,7 +18,7 @@ export function fetchAnimeList(animeName) {
     const url = `https://api.consumet.org/anime/gogoanime/${animeName}`
    return fetch(url)
     .then(response => response.json())
-    .then(json => json.results[0])
+    .then(json => json.results)
     .catch(error => {
       return Promise.reject(
         new Error(`Aucun Anime trouvé avec le nom "${animeName}"`),
