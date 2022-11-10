@@ -1,6 +1,8 @@
 import { renderToString } from '@react-pdf/renderer'
 import React, {useState, useEffect, useReducer} from 'react'
+import { useCallback } from 'react'
 import './animeviewcard.css'
+import { useAnimeCache } from './cacheAnime'
 
 export function fetchAnime(animeName) {
     const url = `https://api.consumet.org/anime/gogoanime/${animeName}`
@@ -59,6 +61,85 @@ export function useAnimeInfos(animeName){
 }
 
 
+
+
+export function useFetchData(search, fetch){
+    const [state, dispatch]=useReducer(reducer, {
+        name:null,
+        error:null,
+        status: 'idle'})
+        
+        const {data, error, status}=state
+        const execute = useCallback(promise=>{
+            dispatch({type:'fetching'})
+            promise.then(result => dispatch({type:'done', payload: result}))
+            .catch(error=>dispatch({type:'fail', error}))
+            
+        },[])
+        const setData=useCallback(data=>dispatch({type:'done', payload:data}), [dispatch])
+        return {data, error, status, execute, setData}   
+    }
+    
+    export function useFindAnimeName(animeName){
+        
+        const [cache, dispatch]=useAnimeCache()
+        const {data, error, status, setData, execute}=useFetchData()
+        
+            useEffect(()=>{
+        if(!animeName){
+            return
+        }else if(cache[`${animeName}`]?.data && Date.now() < cache[`${animeName}`]?.expire){
+            setData(cache[`${animeName}`].data)
+        }else{
+            execute(fetchAnime(animeName).then(animeData=>{
+                dispatch({type:'ADD_ANIME', animeName,animeData})
+                return animeData
+            }))
+        }
+    },[animeName, execute, cache, setData, dispatch])
+    return {data, error, status}
+}
+
+export function useFindAnimeList(animeName){
+    
+    const [cache, dispatch]=useAnimeCache()
+    const {data, error, status, setData, execute}=useFetchData()
+
+    useEffect(()=>{
+        if(!animeName){
+            return
+        }else if(cache[`${animeName}-list`]?.data && Date.now() < cache[`${animeName}-list`]?.expire){
+            setData(cache[`${animeName}-list`].data)
+        }else{
+            execute(fetchAnimeList(animeName).then(animeData=>{
+                dispatch({type:'ADD_ANIME_LIST', animeName,animeData})
+                return animeData
+            }))
+        }
+    },[animeName, execute, cache, setData, dispatch])
+    return {data, error, status}
+}
+
+export function useFindAnimeTop(){
+    const animeName='top-airing'
+    const [cache, dispatch]=useAnimeCache()
+    const {data, error, status, setData, execute}=useFetchData()
+
+    useEffect(()=>{
+        if(!animeName){
+            return
+        }else if(cache[`${animeName}-list`]?.data && Date.now() < cache[`${animeName}-list`]?.expire){
+            setData(cache[`${animeName}-list`].data)
+        }else{
+            execute(fetchAnimeList(animeName).then(animeData=>{
+                dispatch({type:'ADD_ANIME_LIST', animeName,animeData})
+                return animeData
+            }))
+        }
+    },[animeName, execute, cache, setData, dispatch])
+    return {data, error, status}
+}
+
 export function AnimeView({animeName, name}){
     return(
         <div id='animeviewcard'>
@@ -71,33 +152,20 @@ export function AnimeView({animeName, name}){
     )}
 
 
+    export function TopAnimeView({animeName, name}){
+        return(
+            <div id='topanimeviewcard'>
+                <div>
+                    <img id='mainimage' src={name.image}/>
+                    <img id='backgroundimage' src={name.image}/>
+                </div>
+                <div>
+                <h3><u>{name.title}</u></h3>
+                    <span>Genres:</span>
+                    <ul>{name.genres.map(e=><li key={e.id}>{e}</li>)}</ul>
+                </div>
 
-export function useFetchData(search, fetch){
-    const [state, dispatch]=useReducer(reducer, {
-        name:null,
-        error:null,
-        status: 'idle'})
+            </div>
+        )}
     
-    useEffect(()=>{
-        
-        if(!search){return}
-        dispatch({type:'fetching'})
-        fetch(search)
-        .then(result => dispatch({type:'done', payload: result}))
-        .catch(error=>dispatch({type:'fail', error}))
-    },[search])
     
-    return state   
-}
-
-export function useFindAnimeName(animeName){
-    return(
-        useFetchData(animeName, fetchAnime)
-    )
-}
-
-export function useFindAnimeList(animeName){
-    return(
-        useFetchData(animeName, fetchAnimeList)
-    )
-}

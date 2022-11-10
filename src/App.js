@@ -1,8 +1,10 @@
 import './App.css';
 import SearchBar from './components/SearchBar';
-import ListingContent, { AnimeList } from './components/ListingContent';
+import ListingContent, { AnimeList, TopAnime } from './components/ListingContent';
 import Anime from './components/ListingContent';
 import React,{ useState } from 'react';
+import { AnimeCacheProvider } from './components/cacheAnime';
+
 
 
 
@@ -15,7 +17,10 @@ function App() {
       <h1>Trouve ton Anime préféré</h1>
       <label><input type='checkbox' checked={searchList} onChange={e=>setSearchList(e.target.checked)}/>chercher une liste</label>
       <SearchBar animeName={animeName} setAnimeName={setAnimeName} />
+      <AnimeCacheProvider>
       {searchList ? <AnimeList animeName={animeName} dataAnime={dataAnime} setDataAnime={setDataAnime} /> :<Anime animeName={animeName} dataAnime={dataAnime} setDataAnime={setDataAnime} /> }
+    <TopAnime animeName={animeName} dataAnime={dataAnime} setDataAnime={setDataAnime}/>
+      </AnimeCacheProvider>
     </div> 
   );
 }
