@@ -15,7 +15,7 @@ function App() {
       <h1>Trouve ton Anime préféré</h1>
       <label><input type='checkbox' checked={searchList} onChange={e=>setSearchList(e.target.checked)}/>chercher une liste</label>
       <SearchBar animeName={animeName} setAnimeName={setAnimeName} />
-      {searchList ? <Anime animeName={animeName} dataAnime={dataAnime} setDataAnime={setDataAnime} /> :<AnimeList animeName={animeName} dataAnime={dataAnime} setDataAnime={setDataAnime} /> }
+      {searchList ? <AnimeList animeName={animeName} dataAnime={dataAnime} setDataAnime={setDataAnime} /> :<Anime animeName={animeName} dataAnime={dataAnime} setDataAnime={setDataAnime} /> }
     </div> 
   );
 }

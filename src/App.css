@@ -1,12 +1,20 @@
 .App{
   display: flex;
-  height: 100vh;
+  max-height: 100vh;
+  min-height: 100vh;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   background-color: #0d1839;
   color: aliceblue;
   font-family: Poppins;
   font-size: 20px;
-  border-radius: 20px;
+  box-sizing: border-box;
+  margin: 0;
+  padding-top: 50px;
+}
+
+body{
+  margin: 0;
+  padding: 0;
 }

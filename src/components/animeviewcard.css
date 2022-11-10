@@ -1,13 +1,13 @@
 #animeviewcard{
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
     background-color: #00000030;
     padding: 10px;
     border-radius: 20px;
     position: relative;
-    font-size: 15px;
+    font-size: 12px;
     
 }
 
@@ -39,12 +39,37 @@ width: 200px
     }
 
     .carousel{
-        cursor: grab;
         overflow: hidden;
-        width: 100vw
+        width: 100vw;
+        padding: 100px 50px;
+        box-sizing: border-box;
+        overflow-x: scroll;
+
     }
 
     .inner-carousel{
         display: flex;
-        gap: 100px
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+        gap: 50px
     }
+
+::-webkit-scrollbar {
+    width: 10px;
+    height: 20px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: #00000030;  }
+  
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #00000050;
+    border-radius: 20px;
+    transition: 0.3s
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #398ffc;
+transition: 0.3s;}

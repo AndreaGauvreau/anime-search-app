@@ -25,12 +25,6 @@ export default function Anime({animeName}){
 }
 
 export function AnimeList({animeName}){
-  const [width, setWidth]=useState(0)
-  const carousel=useRef()
-  useEffect(()=>{
-    setWidth()
-  },[])
-
 
   const state=useFindAnimeList(animeName)
   const {data:animes, error, status}=state
@@ -42,8 +36,8 @@ export function AnimeList({animeName}){
     return 'Chargement...'
   }else if(status==='done'){
     return(
-    <motion.div ref={carousel} className='carousel' whileTap={{cursor:"grabbing"}}>
-    <motion.div drag="x" dragConstraints={{right:0, left: -width}} className='inner-carousel' >
+    <motion.div className='carousel'>
+    <motion.div className='inner-carousel' >
       {animes.map( (animes, index) =>(
       <motion.div className='item' key={index}><AnimeView name={animes} animeName={animeName} /></motion.div> )
       )}
